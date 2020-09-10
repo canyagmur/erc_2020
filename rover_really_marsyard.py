@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 from datetime import datetime
 import rospy
@@ -103,14 +103,14 @@ def detectGray(image_frame,black_image):
     rgb_image = image_frame
     binary_image_mask = filter_color(rgb_image, grayLower, grayUpper)
     contours = getContours(binary_image_mask)
-    draw_contours(black_image,rgb_image, contours,(0, 0,255),10000,500000,"GRAY SOIL",thick=2)
+    draw_contours(black_image,rgb_image, contours,(0, 0,255),100,500000,"GRAY SOIL",thick=2)
 def detectYellow(image_frame,black_image):
     grayLower =(16, 52, 188)
     grayUpper = (255, 255, 255)
     rgb_image = image_frame
     binary_image_mask = filter_color(rgb_image, grayLower, grayUpper)
     contours = getContours(binary_image_mask)
-    draw_contours(black_image,rgb_image, contours,(255, 255,0),1000,500000,"YELLOW SOIL",thick=2)
+    draw_contours(black_image,rgb_image, contours,(255, 255,0),1000,500000,"",thick=1)
 def detectRocks(image_frame,black_image):
     rockLower =(105, 13, 35)
     rockUpper = (124, 71, 94)
@@ -149,9 +149,17 @@ def detectWhite(image_frame,black_image):
     #yellowLower =(30, 10, 52)
     #yellowUpper = (95, 255, 255)
     rgb_image = image_frame
-    binary_image_mask = filter_color(rgb_image, grayLower, grayUpper)
+    #cv2.imshow("original",rgb_image)
+    
+    crop_rgb_image=image_frame[200:rgb_image.shape[0],0:rgb_image.shape[1]]
+    
+    #cv2.imshow("cropped",crop_rgb_image)
+
+    crop_black_image=image_frame[200:black_image.shape[0],0:black_image.shape[1]]
+    
+    binary_image_mask = filter_color(crop_rgb_image, grayLower, grayUpper)
     contours = getContours(binary_image_mask)
-    draw_contours(black_image,rgb_image, contours,(0, 0, 0),100,10000,"WHITE",thick=2)
+    draw_contours(crop_black_image,crop_rgb_image, contours,(0, 0, 0),100,500000,"WHITE",thick=2)
 
 
 def image_callback(ros_image):
@@ -172,15 +180,15 @@ def image_callback(ros_image):
   black_image = np.zeros([frame.shape[0],frame.shape[1],3],'uint8')
   
   if cv2.waitKey(1) == ord('r') or i>=70:
-   cv2.imwrite("/catkin_my_ws/src/marsyard_images/savedImage{}.jpg".format(datetime.now()),frame)
+   cv2.imwrite("/home/canyagmur/Desktop/marsyard_images/savedImage{}.jpg".format(datetime.now()),frame)
    print("raw image is saved!")
    i=0
    
   
   
-  #detectIsland(frame,black_image) #I will turn back to you xd
+  detectIsland(frame,black_image) #I will turn back to you xd
 
-  #detectGray(frame,black_image) #I will turn back to you xd
+  detectGray(frame,black_image) #I will turn back to you xd
 
   detectRocks(frame,black_image) #works good!
 
@@ -192,13 +200,13 @@ def image_callback(ros_image):
 
   #detectRight(frame,black_image) #this is problematic! detects everything xd
 
-  #detectYellow(frame,black_image)  #I will turn back to you xd
+  detectYellow(frame,black_image)  #I will turn back to you xd
 
-  #cv2.imshow("RGB Image Contours",frame)
-  #cv2.imshow("Black Image Contours",black_image)
+  cv2.imshow("RGB Image Contours",frame)
+  cv2.imshow("Black Image Contours",black_image)
   if(cv2.waitKey(1) == ord(' ') or j>=70):
-    cv2.imwrite("/catkin_my_ws/src/marsyard_images/savedImage{}.jpg".format(datetime.now()),frame)
-    cv2.imwrite("/catkin_my_ws/src/marsyard_images/savedImage{}.jpg".format(datetime.now()),black_image)
+    cv2.imwrite("/home/canyagmur/Desktop/marsyard_images/savedImage{}.jpg".format(datetime.now()),frame)
+    cv2.imwrite("/home/canyagmur/Desktop/marsyard_images/savedImage{}.jpg".format(datetime.now()),black_image)
     print("proccesed images are saved!")
     j=0
 
