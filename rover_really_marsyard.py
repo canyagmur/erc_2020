@@ -159,8 +159,8 @@ def image_callback(ros_image):
   global i
   global j
   global bridge
-  #j+=1
-  #i+=1                    #WARNNINGGGGGG FOR TAKING PHOTOS
+  j+=1
+  i+=1                    #WARNNINGGGGGG FOR TAKING PHOTOS
   #convert ros_image into an opencv-compatible image
   try:
     cv_image = bridge.imgmsg_to_cv2(ros_image, "bgr8")
@@ -194,8 +194,8 @@ def image_callback(ros_image):
 
   #detectYellow(frame,black_image)  #I will turn back to you xd
 
-  cv2.imshow("RGB Image Contours",frame)
-  cv2.imshow("Black Image Contours",black_image)
+  #cv2.imshow("RGB Image Contours",frame)
+  #cv2.imshow("Black Image Contours",black_image)
   if(cv2.waitKey(1) == ord(' ') or j>=70):
     cv2.imwrite("/catkin_my_ws/src/marsyard_images/savedImage{}.jpg".format(datetime.now()),frame)
     cv2.imwrite("/catkin_my_ws/src/marsyard_images/savedImage{}.jpg".format(datetime.now()),black_image)
