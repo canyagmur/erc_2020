@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from datetime import datetime
 import rospy
@@ -180,7 +180,7 @@ def image_callback(ros_image):
   black_image = np.zeros([frame.shape[0],frame.shape[1],3],'uint8')
   
   if cv2.waitKey(1) == ord('r') or i>=70:
-   cv2.imwrite("/home/canyagmur/Desktop/marsyard_images/savedImage{}.jpg".format(datetime.now()),frame)
+   cv2.imwrite("/mars/savedImage{}.jpg".format(datetime.now()),frame)
    print("raw image is saved!")
    i=0
    
@@ -205,8 +205,8 @@ def image_callback(ros_image):
   cv2.imshow("RGB Image Contours",frame)
   cv2.imshow("Black Image Contours",black_image)
   if(cv2.waitKey(1) == ord(' ') or j>=70):
-    cv2.imwrite("/home/canyagmur/Desktop/marsyard_images/savedImage{}.jpg".format(datetime.now()),frame)
-    cv2.imwrite("/home/canyagmur/Desktop/marsyard_images/savedImage{}.jpg".format(datetime.now()),black_image)
+    cv2.imwrite("/mars/savedImage{}.jpg".format(datetime.now()),frame)
+    cv2.imwrite("/mars/savedImage{}.jpg".format(datetime.now()),black_image)
     print("proccesed images are saved!")
     j=0
 
