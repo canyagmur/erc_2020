@@ -215,7 +215,7 @@ def main(args):
   print("press 'r' for taking raw iamges")
   print("press SPACE button for taking processed iamges")
   rospy.init_node('marsyard_image_proccessing', anonymous=True)
-  image_sub = rospy.Subscriber("zed2/left_raw/image_raw_color",Image, image_callback) #zed2/left_raw/image_raw_color 26   /zed2/left/image_rect_color 31   /zed2/right/image_rect_color 34
+  image_sub = rospy.Subscriber("zed2/left/image_rect_color",Image, image_callback) #zed2/left_raw/image_raw_color 26   /zed2/left/image_rect_color 31   /zed2/right/image_rect_color 34
   try:
     rospy.spin()
   except KeyboardInterrupt:
