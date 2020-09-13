@@ -202,8 +202,8 @@ def image_callback(ros_image):
 
   detectYellow(frame,black_image)  #I will turn back to you xd
 
-  cv2.imshow("RGB Image Contours",frame)
-  cv2.imshow("Black Image Contours",black_image)
+  #cv2.imshow("RGB Image Contours",frame)
+  #cv2.imshow("Black Image Contours",black_image)
   if(cv2.waitKey(1) == ord(' ') or j>=70):
     cv2.imwrite("/mars/savedImage{}.jpg".format(datetime.now()),frame)
     cv2.imwrite("/mars/savedImage{}.jpg".format(datetime.now()),black_image)
