@@ -25,7 +25,4 @@ parser.add_argument('--kwargs',
 #parsing arguments
 args = parser.parse_args()
 
-# show the dictionary
-if(args.kwargs.has_key("one")):
-	print(args.kwargs["one"])
 
