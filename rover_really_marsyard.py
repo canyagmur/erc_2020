@@ -14,17 +14,19 @@ import argparser
 import os.path
 
 
-#THIS SCRIPT TAKES TWO ARGUMENTS : dir,subs
-#ARGUMENTS CAN BE GIVEN AS FOLLOW : python marsyard_detection.py --kwargs dir=<valid_string_directory> subs=<valid_string_topic>
+#THIS SCRIPT TAKES THREE ARGUMENTS : dir,subs, show
+#ARGUMENTS CAN BE GIVEN AS FOLLOW : python marsyard_detection.py --kwargs dir=<valid_string_directory> subs=<valid_string_topic> show=<valid_boolean_decision>
 #ORDER OF ARGUMENTS IS NOT IMPORTANT !
 
 
-
-i=0
+#If i = 1 , j must be 7 to save images concurrently.
+i=0 
 j=0
 
-DIRECTORY = "/home/canyagmur/Desktop/marsyard_images_2021"
+
+DIRECTORY = "/mars"
 sub_topic = "/zed2/left_raw/image_raw_color"
+show_image = False
 
 # creating parser pbject
 parser = argparse.ArgumentParser()
@@ -43,6 +45,8 @@ if(bool(args.kwargs)!=0):
         DIRECTORY = args.kwargs["dir"]
     if(args.kwargs.has_key("subs")):
         sub_topic = args.kwargs["subs"]
+    if(args.kwargs.has_key("show")):
+        show_image = bool(args.kwargs["show"])
 else:
     print("No arguments passed. Default values will be used.")
 
@@ -53,6 +57,7 @@ if(os.path.isdir(DIRECTORY)!=1):
 
 print("Subscribed Topic : "+sub_topic)
 print("Treasure Directory : "+DIRECTORY)
+print("Show Images : "+ str(show_image))
 
 
 bridge = CvBridge()
@@ -116,7 +121,7 @@ def draw_contours(black_image,image, contours,color_of_contour,limit_area,text,t
             #cv2.circle(image, (cx,cy),(int)(2),(0,0,255),thickness=2)
             cv2.circle(black_image, (cx,cy),(int)(2),(0,0,255),thickness=1)
             #print ("Area: {}, Perimeter: {}".format(area, perimeter))
-    if(j>700):
+    if(j>175):
         cv2.imwrite(DIRECTORY+"/savedImage{}.jpg".format(datetime.now()),image)#CHECK DIRECTORY
         cv2.imwrite(DIRECTORY+"/savedImage{}.jpg".format(datetime.now()),black_image)#CHECK DIRECTORY
         print("proccesed images are saved!")
@@ -218,11 +223,12 @@ def image_callback(ros_image):
   except CvBridgeError as e:
       print(e)
   #from now on, you can work exactly like with opencv---------
-  cv2.imshow("RGB Image",cv_image)
+  if(show_image):
+    cv2.imshow("RGB Image",cv_image)
   frame=cv_image
   black_image = np.zeros([frame.shape[0],frame.shape[1],3],'uint8')
   
-  if cv2.waitKey(1) == ord(' ') or i>=100:
+  if cv2.waitKey(1) == ord(' ') or i>=25:
    cv2.imwrite(DIRECTORY+"/savedImage{}.jpg".format(datetime.now()),frame)# CHECK DIRECTORY
    print("raw image is saved!")
    i=0
@@ -242,8 +248,9 @@ def image_callback(ros_image):
   detectRight(frame,black_image)
 
   detectYellow(frame,black_image)
-  cv2.imshow("RGB Image Contours",frame)
-  cv2.imshow("Black Image Contours",black_image)
+  if(show_image):
+    cv2.imshow("RGB Image Contours",frame)
+    cv2.imshow("Black Image Contours",black_image)
 
   
 def main(args):
