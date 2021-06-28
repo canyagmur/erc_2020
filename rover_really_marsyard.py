@@ -12,6 +12,7 @@ import time
 import argparse
 import argparser
 import os.path
+#import keyboard
 
 
 #THIS SCRIPT TAKES THREE ARGUMENTS : dir,subs, show
@@ -24,7 +25,7 @@ i=0
 j=0
 
 
-DIRECTORY = "/mars"
+DIRECTORY = "/home/canyagmur/Desktop/marsyard_images_2021"
 sub_topic = "/zed2/left_raw/image_raw_color"
 show_image = False
 
@@ -232,6 +233,9 @@ def image_callback(ros_image):
    cv2.imwrite(DIRECTORY+"/savedImage{}.jpg".format(datetime.now()),frame)# CHECK DIRECTORY
    print("raw image is saved!")
    i=0
+  #if keyboard.wait(" "):
+   #cv2.imwrite(DIRECTORY+"/savedImageByUser{}.jpg".format(datetime.now()),frame)# CHECK DIRECTORY
+   #print("USER : raw image is saved!")
    
   
   
