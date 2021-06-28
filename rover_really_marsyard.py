@@ -25,7 +25,7 @@ i=0
 j=0
 
 
-DIRECTORY = "/home/canyagmur/Desktop/marsyard_images_2021"
+DIRECTORY = "/mars"
 sub_topic = "/zed2/left_raw/image_raw_color"
 show_image = False
 
