@@ -12,8 +12,9 @@ import time
 import argparse
 import argparser
 import os.path
-#import keyboard
+from pynput.keyboard import Listener  #used for save image from terminal
 
+spacePressed = False
 
 #THIS SCRIPT TAKES THREE ARGUMENTS : dir,subs, show
 #ARGUMENTS CAN BE GIVEN AS FOLLOW : python marsyard_detection.py --kwargs dir=<valid_string_directory> subs=<valid_string_topic> show=<valid_boolean_decision>
@@ -24,8 +25,17 @@ import os.path
 i=0 
 j=0
 
+def keyPressed(key):
+    global spacePressed
+    if(str(key) == "Key.space"):
+        spacePressed = True
 
-DIRECTORY = "/mars"
+listener = Listener(on_press=keyPressed)
+listener.start()
+
+
+
+DIRECTORY = "/home/canyagmur/Desktop/marsyard_images_2021"
 sub_topic = "/zed2/left_raw/image_raw_color"
 show_image = False
 
@@ -217,6 +227,7 @@ def image_callback(ros_image):
   #print 'got an image'
   global i
   global bridge
+  global spacePressed
   i+=1
   #convert ros_image into an opencv-compatible image
   try:
@@ -229,13 +240,17 @@ def image_callback(ros_image):
   frame=cv_image
   black_image = np.zeros([frame.shape[0],frame.shape[1],3],'uint8')
   
-  if cv2.waitKey(1) == ord(' ') or i>=25:
+  if  i>=25:
    cv2.imwrite(DIRECTORY+"/savedImage{}.jpg".format(datetime.now()),frame)# CHECK DIRECTORY
    print("raw image is saved!")
    i=0
-  #if keyboard.wait(" "):
-   #cv2.imwrite(DIRECTORY+"/savedImageByUser{}.jpg".format(datetime.now()),frame)# CHECK DIRECTORY
-   #print("USER : raw image is saved!")
+
+  if spacePressed:
+    cv2.imwrite(DIRECTORY+"/savedImageByUser{}.jpg".format(datetime.now()),frame)# CHECK DIRECTORY
+    print("USER : raw image is saved!")
+    spacePressed = False
+
+
    
   
   
@@ -269,3 +284,4 @@ def main(args):
 
 if __name__ == '__main__':
     main(sys.argv)
+
